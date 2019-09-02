@@ -53,7 +53,8 @@ THIRD_PARTY_APP = [
     'allauth.socialaccount',
     'rest_auth',
     'rest_auth.registration',
-    'crispy_forms'
+    'crispy_forms',
+    'webpack_loader',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APP
@@ -142,6 +143,13 @@ LOGOUT_REDIRECT_URL = '/'
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "assets"),
+    os.path.join(BASE_DIR, "frontend/dist")
+]
+
+# STATIC_ROOT = "" # PATH TO THE DIRECTORY WHERE COLLECTSTATIC WILL CCOLLECT STATIC FILES FOR DEPLOYMENT.
+
 # Custom User Model
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -163,5 +171,14 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2
+}
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'dist/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
+    }
 }
